@@ -4,10 +4,16 @@ jobs:
   Dependances:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Dependances
         uses: aquasecurity/trivy-action@v0.36.0
-        with: 
-          input: requirements.txt
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          
   Dockerfile:
     runs-on: ubuntu-latest
     needs: Dependances
