@@ -19,11 +19,15 @@ jobs:
     needs: Dependances
     steps:
       - uses: actions/checkout@v4
+      - name: Build Dockerfile
+        run: |
+          docker build -t app:${{ github.sha }} .
       - name: Test Dockerfile
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          scan-type: config
-          scan-ref: Dockerfile
+          scan-type: image
+          image-ref: app:${{ github.sha }}
+          scanners: vuln
           severity: HIGH,CRITICAL
           exit-code: '1'
           
